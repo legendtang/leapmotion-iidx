@@ -21,15 +21,15 @@ controller.on('frame', function(frame){
 				console.log(gesture);
 				pointableIds.forEach(function(pointableId){
 					var pointable = frame.pointable(pointableId);
-					$(document).trigger("handTap", [pointable, pointableId % 10]); 
+					$(document).trigger("handTap", [pointable.stabilizedTipPosition, pointableId % 10]); 
 				});
 			}
 		});
 	}
 });
 
-$(document).on('handTap', function(event, pointable, finger){
-	console.log(pointable.stabilizedTipPosition);
+$(document).on('handTap', function(event, xyz, finger){
+	console.log(xyz);
 	console.log(finger);
 });
 
