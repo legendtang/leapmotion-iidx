@@ -1,2 +1,2 @@
-node ./bin/inti
+node app.js
 pause
