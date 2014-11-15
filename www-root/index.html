@@ -1,1 +1,70 @@
-It works!
+<!--
+The MIT License (MIT)
+Copyright (c) 2014 Leap Motion Inc
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+//-->
+
+<html>
+	<head>
+		<title>Pinch Strength Demo</title>
+		<script src="./mrdoob-three.js-ca14c79/build/three.js"></script>
+		<script src="http://js.leapmotion.com/leap-0.6.2.js"></script>
+		<script src="http://js.leapmotion.com/leap-plugins-0.1.6.1.js"></script>
+		<script src="http://js.leapmotion.com/leap.rigged-hand-0.1.4.min.js"></script>
+
+		<script src="./mrdoob-three.js-ca14c79/examples/js/renderers/Projector.js"></script>
+		<script src="./mrdoob-three.js-ca14c79/examples/js/renderers/CanvasRenderer.js"></script>
+		<script src="./mrdoob-three.js-ca14c79/examples/js/libs/stats.min.js"></script>
+
+		<style class="codepen">
+			body{
+				  font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+				  /*background: #000;*/
+			}
+			#output{
+				  font-size: 66px;
+				  color: #005d98;
+				  text-align: left;
+				  position: fixed;
+				  bottom: 18px;
+			}
+			
+			#progress {
+				  background: #005d98;
+				  position: fixed;
+				  bottom: 0;
+				  left: 0;
+				  height: 16px;
+				  width: 0%;
+			}
+			img#connect-leap{
+				  /* this can be removed with leapjs-plugins 0.1.4.1 */
+				  max-width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="output"></div>
+		<div id="progress"></div>
+	</body>
+	
+	<script src="./leap_loop.js"></script>
+	<script src="./draw_hand.js"></script>
+	<script src="./draw_cube.js"></script>
+
+</html>
