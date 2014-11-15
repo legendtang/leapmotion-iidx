@@ -49,4 +49,4 @@ var camera = controller.plugins.riggedHand.camera;
 camera.position.set(-8,8,20);
 camera.lookAt(new THREE.Vector3(0,0,0));
 };
-visualizeHand(Leap.loopController);
+visualizeHand(controller);

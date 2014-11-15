@@ -1,6 +1,6 @@
 var container, stats;
 
-var camera, scene, renderer;
+var camera, renderer;
 
 var cube, back_cube, plane;
 
@@ -125,7 +125,6 @@ function CubeDrop(dropID, cubeDrop, bpm)
 		this.drop_cube.position.y = cubeDrop.drop_cube.position.y - 5;
 	}else{
 		this.drop_cube.position.x = -(2 * 76 + 76) + (this.dropID + 1) * 76;
-		console.log(this.dropID);
 		this.drop_cube.position.y = 400;
 	}
 	//this.drop_cube.position.y = 0 + 400;
@@ -224,7 +223,7 @@ function animate() {
 
 function render() {
 
-	scene = new THREE.Scene();
+	var scene = new THREE.Scene();
 
 	// Cube
 
@@ -265,8 +264,16 @@ function render() {
 	}
 	
 	renderer.render( scene, camera );
+	delete scene;
 }
 
 function add_drop(dropID, dropList){
 	dropList.push(new CubeDrop(dropID, cubeDropNull, null));
 }
+
+var a = 0;
+setInterval(function(){
+	add_drop(a, drop_list);
+	a++;
+	if(a>4) a = 0;
+},1000);
