@@ -1,6 +1,8 @@
 /********************************************************
 * This is the actual example part where we call pinchStrength
 *****************************************************/
+var last_hentai = 'Legend Tang';
+var hentai = 'Legend Tang';
 
 // Set up the controller:
 var controller = new Leap.Controller({
@@ -21,6 +23,8 @@ controller.on('frame', function(frame){
 				console.log(gesture);
 				pointableIds.forEach(function(pointableId){
 					var pointable = frame.pointable(pointableId);
+					last_hentai = hentai;
+					hentai = pointable[0];
 					$(document).trigger("handTap", [pointable, pointableId % 10]); 
 				});
 			}
@@ -31,6 +35,7 @@ controller.on('frame', function(frame){
 $(document).on('handTap', function(event, pointable, finger){
 	console.log(pointable.stabilizedTipPosition);
 	console.log(finger);
+	hentai 
 });
 
 controller.connect();

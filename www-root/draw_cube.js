@@ -2,8 +2,6 @@ var container, stats;
 
 var camera, renderer;
 
-var cube, back_cube, plane;
-
 var cubeDropNull = {
 	drop_cube: {
 		position: {
@@ -17,14 +15,11 @@ var drop_list = [];
 var targetRotation = 0;
 var targetRotationOnMouseDown = 0;
 
-var mouseX = 0;
-var mouseXOnMouseDown = 0;
 
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 
 init();
-animate();
 // drop_rotation();
 
 function init() {
@@ -89,19 +84,7 @@ function init() {
 	stats.domElement.style.top = '0px';
 	container.appendChild( stats.domElement );
 
-	// document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-	// document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-	// document.addEventListener( 'touchmove', onDocumentTouchMove, false );
-
-	//
-
-	window.addEventListener( 'resize', onWindowResize, false );
-
 }
-
-// function  (argument) {
-// 	// body...
-// }
 
 // function judgeTip (ID, status) {
 
@@ -130,22 +113,19 @@ function CubeDrop(dropID, cubeDrop, bpm)
 {
 	this.dropID = dropID;
 	this.bpm = bpm;
-	this.bpm = 0;
 	if (this.dropID >= 5) {
 		return;
 	};
 	var drop_geometry = new THREE.BoxGeometry( 76, 16, 1 );
 
 	var drop_material;
-	var green_material = new THREE.MeshBasicMaterial({color: 0xADFF2F});
-	var yellow_material = new THREE.MeshBasicMaterial({color: 0xB8860B});
 	if (dropID % 2 == 0)
 	{
-		drop_material = green_material;
+		drop_material = new THREE.MeshBasicMaterial({color: 0xADFF2F});
 	}
 	else
 	{
-		drop_material =  yellow_material;
+		drop_material =  new THREE.MeshBasicMaterial({color: 0xB8860B});
 	}
 	this.drop_cube = new THREE.Mesh(drop_geometry, drop_material);
 	if(cubeDrop.drop_cube.position.x != null){
@@ -161,88 +141,7 @@ function CubeDrop(dropID, cubeDrop, bpm)
 	// drop_cube[ dropID ].rotation.x += 0.1;
 }
 
-function onWindowResize() {
-
-	windowHalfX = window.innerWidth / 2;	
-	windowHalfY = window.innerHeight / 2;
-
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
-
-	renderer.setSize( window.innerWidth, window.innerHeight );
-
-}
-
-// //
-
-// function onDocumentMouseDown( event ) {
-
-// 	event.preventDefault();
-
-// 	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-// 	document.addEventListener( 'mouseup', onDocumentMouseUp, false );
-// 	document.addEventListener( 'mouseout', onDocumentMouseOut, false );
-
-// 	mouseXOnMouseDown = event.clientX - windowHalfX;
-// 	targetRotationOnMouseDown = targetRotation;
-
-// }
-
-// function onDocumentMouseMove( event ) {
-
-// 	mouseX = event.clientX - windowHalfX;
-
-// 	targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.02;
-
-// }
-
-// function onDocumentMouseUp( event ) {
-
-// 	document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
-// 	document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
-// 	document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
-
-// }
-
-// function onDocumentMouseOut( event ) {
-
-// 	document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
-// 	document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
-// 	document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
-
-// }
-
-// function onDocumentTouchStart( event ) {
-
-// 	if ( event.touches.length === 1 ) {
-
-// 		event.preventDefault();
-
-// 		mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
-// 		targetRotationOnMouseDown = targetRotation;
-
-// 	}
-
-// }
-
-// function onDocumentTouchMove( event ) {
-
-// 	if ( event.touches.length === 1 ) {
-
-// 		event.preventDefault();
-
-// 		mouseX = event.touches[ 0 ].pageX - windowHalfX;
-// 		targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
-
-// 	}
-
-// }
-
-//
-
-function animate() {
-
-	requestAnimationFrame( animate );
+function animate(){
 
 	render();
 	stats.update();
@@ -253,6 +152,7 @@ function render() {
 
 	var scene = new THREE.Scene();
 	// Cube
+	var cube, back_cube, plane;
 
 	var geometry = new THREE.BoxGeometry( 400, 600, 1 );
 
@@ -283,13 +183,48 @@ function render() {
 	// plane.rotation.y = cube.rotation.y += ( targetRotation - cube.rotation.y ) * 0.05;	
 	for(var i in drop_list){
 		if (drop_list[i].drop_cube.position.y < -100) {
-			drop_list.splice(i, 1);
+			drop_list.shift();
 		}else{
 			drop_list[i] = new CubeDrop(drop_list[i].dropID, drop_list[i], null)
 			scene.add(drop_list[i].drop_cube);
 		}
 	}
 	
+	//Tap
+	var ID;
+	if(last_hentai != hentai && hentai != 'Legend Tang'){
+		if(hentai > -80 && hentai < 60){
+			if(hentai < (28 - 80)){
+				ID = 0;
+			}
+			else if(hentai >= (28-80) && hentai < (28+28-80)){
+				ID = 1;
+			}
+			else if(hentai >= (28+28-80) && hentai < (28+28+28-80)){
+				ID = 2;
+			}
+			else if(hentai >= (28+28+28-80) && hentai < (28+28+28+28-80)){
+				ID = 3;
+			}
+			else if(hentai >= (28+28+28+28-80) && hentai < 60){
+				ID = 4;
+			}
+			var judge_geometry = new THREE.BoxGeometry( 78, 19, 16 );
+			var judge_cube;
+			var yellow_material = new THREE.MeshBasicMaterial({color: 0xFFCC00});
+			var blue_material = new THREE.MeshBasicMaterial({color: 0x0000FF});	
+			if (status) {
+				var judge_material =  yellow_material;
+			}else {
+				var judge_material =  blue_material;
+			}
+
+			judge_cube = new THREE.Mesh(judge_geometry, judge_material);
+			judge_cube.position.x = (ID + 1) * 76 - 3 * 76;
+			judge_cube.position.y = -100;
+			scene.add(judge_cube);
+		}
+	}
 
 	renderer.render( scene, camera );
 	// delete scene;
@@ -300,8 +235,11 @@ function add_drop(dropID, dropList){
 }
 
 var a = 0;
-requestAnimationFrame(function(){
+setInterval( function () {
+
 	add_drop(a, drop_list);
 	a++;
-	if(a>4) a = 0;
-});
+	if(a>5) a=0;
+    requestAnimationFrame( animate );
+
+}, 1000 / 30 );
