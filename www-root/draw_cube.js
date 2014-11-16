@@ -44,6 +44,7 @@ function init() {
 	camera.position.y = 100;
 	camera.position.z = 500;
 
+	
 
 	//Drop Cube
 	// var drop_geometry = new THREE.BoxGeometry( 78, 16, 16 );
@@ -88,15 +89,42 @@ function init() {
 	stats.domElement.style.top = '0px';
 	container.appendChild( stats.domElement );
 
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-	document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-	document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+	// document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+	// document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+	// document.addEventListener( 'touchmove', onDocumentTouchMove, false );
 
 	//
 
 	window.addEventListener( 'resize', onWindowResize, false );
 
 }
+
+// function  (argument) {
+// 	// body...
+// }
+
+// function judgeTip (ID, status) {
+
+// 	var judge_geometry = new THREE.BoxGeometry( 78, 19, 16 );
+
+
+// 	var judge_cube;
+// 	var yellow_material = new THREE.MeshBasicMaterial({color: 0xFFCC00});
+// 	var blue_material = new THREE.MeshBasicMaterial({color: 0x0000FF});	
+// 	if (status) {
+// 		var judge_material =  yellow_material;
+// 	}else {
+// 		var judge_material =  blue_material;
+// 	}
+
+// 	judge_cube = new THREE.Mesh(judge_geometry, judge_material);
+// 	judge_cube.position.x = (ID + 1) * 76 - 3 * 76;
+// 	judge_cube.position.y = -100;
+// 	scene.add(judge_cube);
+// 	// setTimeout(function () {
+// 	// 	judge_material = new THREE.MeshBasicMaterial({color: 0xFFFFFF});
+// 	// },500);
+// }
 
 function CubeDrop(dropID, cubeDrop, bpm)
 {
@@ -145,70 +173,70 @@ function onWindowResize() {
 
 }
 
-//
+// //
 
-function onDocumentMouseDown( event ) {
+// function onDocumentMouseDown( event ) {
 
-	event.preventDefault();
+// 	event.preventDefault();
 
-	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-	document.addEventListener( 'mouseup', onDocumentMouseUp, false );
-	document.addEventListener( 'mouseout', onDocumentMouseOut, false );
+// 	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+// 	document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+// 	document.addEventListener( 'mouseout', onDocumentMouseOut, false );
 
-	mouseXOnMouseDown = event.clientX - windowHalfX;
-	targetRotationOnMouseDown = targetRotation;
+// 	mouseXOnMouseDown = event.clientX - windowHalfX;
+// 	targetRotationOnMouseDown = targetRotation;
 
-}
+// }
 
-function onDocumentMouseMove( event ) {
+// function onDocumentMouseMove( event ) {
 
-	mouseX = event.clientX - windowHalfX;
+// 	mouseX = event.clientX - windowHalfX;
 
-	targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.02;
+// 	targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.02;
 
-}
+// }
 
-function onDocumentMouseUp( event ) {
+// function onDocumentMouseUp( event ) {
 
-	document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
-	document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
-	document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+// 	document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+// 	document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+// 	document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
 
-}
+// }
 
-function onDocumentMouseOut( event ) {
+// function onDocumentMouseOut( event ) {
 
-	document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
-	document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
-	document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+// 	document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+// 	document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+// 	document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
 
-}
+// }
 
-function onDocumentTouchStart( event ) {
+// function onDocumentTouchStart( event ) {
 
-	if ( event.touches.length === 1 ) {
+// 	if ( event.touches.length === 1 ) {
 
-		event.preventDefault();
+// 		event.preventDefault();
 
-		mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
-		targetRotationOnMouseDown = targetRotation;
+// 		mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
+// 		targetRotationOnMouseDown = targetRotation;
 
-	}
+// 	}
 
-}
+// }
 
-function onDocumentTouchMove( event ) {
+// function onDocumentTouchMove( event ) {
 
-	if ( event.touches.length === 1 ) {
+// 	if ( event.touches.length === 1 ) {
 
-		event.preventDefault();
+// 		event.preventDefault();
 
-		mouseX = event.touches[ 0 ].pageX - windowHalfX;
-		targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
+// 		mouseX = event.touches[ 0 ].pageX - windowHalfX;
+// 		targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
 
-	}
+// 	}
 
-}
+// }
 
 //
 
@@ -224,7 +252,6 @@ function animate() {
 function render() {
 
 	var scene = new THREE.Scene();
-
 	// Cube
 
 	var geometry = new THREE.BoxGeometry( 400, 600, 1 );
@@ -263,8 +290,9 @@ function render() {
 		}
 	}
 	
+
 	renderer.render( scene, camera );
-	delete scene;
+	// delete scene;
 }
 
 function add_drop(dropID, dropList){
@@ -272,8 +300,8 @@ function add_drop(dropID, dropList){
 }
 
 var a = 0;
-setInterval(function(){
+requestAnimationFrame(function(){
 	add_drop(a, drop_list);
 	a++;
 	if(a>4) a = 0;
-},1000);
+});

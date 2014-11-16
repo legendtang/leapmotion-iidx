@@ -22,13 +22,14 @@ THE SOFTWARE.
 	<head>
 		<title>Pinch Strength Demo</title>
 		<script src="./jquery-1.11.1.min.js"></script>
-		<script src="./three.min.js"></script>
+		<script src="./mrdoob-three.js-ca14c79/build/three.js"></script>
 		<script src="./leap-0.6.2.js"></script>
 		<script src="./leap-plugins-0.1.6.1.js"></script>
 		<script src="./leap.rigged-hand-0.1.4.min.js"></script>
 
-		<script src="./Projector.js"></script>
-		<script src="./stats.min.js"></script>
+		<script src="./mrdoob-three.js-ca14c79/examples/js/renderers/Projector.js"></script>
+		<script src="./mrdoob-three.js-ca14c79/examples/js/renderers/CanvasRenderer.js"></script>
+		<script src="./mrdoob-three.js-ca14c79/examples/js/libs/stats.min.js"></script>
 
 		<style class="codepen">
 			body{
@@ -61,10 +62,19 @@ THE SOFTWARE.
 	<body>
 		<div id="output"></div>
 		<div id="progress"></div>
+		<audio id="audio" src="./rainbowaftersnow.mp3" autoplay></audio>
 	</body>
-	
 	<script src="./leap_loop.js"></script>
 	<script src="./draw_hand.js"></script>
 	<script src="./draw_cube.js"></script>
-
+    <script>
+		var audio = document.getElementById('audio');
+		var ctime;
+		setInterval(function() {
+			if (audio.duration != audio.currentTime){
+				ctime = Math.floor(audio.currentTime * 1000);
+		    	console.log(ctime);
+		    }
+		}, 100);
+    </script>
 </html>
