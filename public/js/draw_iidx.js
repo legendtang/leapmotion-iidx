@@ -25,10 +25,14 @@ var basicPanel = new PIXI.Graphics();
 basicPanel.beginFill(0x000, 0.5);
 basicPanel.lineStyle(basicPanelLineWidth, 0x000, 1);
 basicPanel.drawRect((width - basicPanelWidth) / 2, -basicPanelLineWidth, basicPanelWidth, height + basicPanelLineWidth * 2);
+basicPanel.endFill();
+
 //markerPanel
 basicPanel.beginFill(0x000, 0.7);
 basicPanel.lineStyle(1, 0x000, 1);
 basicPanel.drawRect((width - basicPanelWidth) / 2 + healPanelWidth, 0, markerPanelWidth, height);
+basicPanel.endFill();
+
 // //markerPanel texture
 // basicPanel.beginFill(0xFFF, 0);
 // basicPanel.lineStyle(3, 0xEF6868, 1);
@@ -49,14 +53,14 @@ basicPanel.drawPolygon([
     (width - markerPanelTextureWidth) / 2,
     height - buttonPanelHeight - 50
 ]);
+basicPanel.endFill();
+
 basicPanel.beginFill(0xEF6868, 1);
 basicPanel.moveTo((width - markerPanelTextureWidth) / 2 + 10, height - buttonPanelHeight - 25);
 basicPanel.lineTo((width - markerPanelTextureWidth) / 2 + markerPanelTextureWidth - 10, height - buttonPanelHeight - 25);
+basicPanel.endFill();
 
 stage.addChild(basicPanel);
-
-// start animating
-animateGame();
 
 var bgm = document.getElementById('bgm');
 
@@ -77,7 +81,38 @@ bgm.oncanplay = function() {
 //     texture.destory();
 // };
 
+function point(pointerContainer){
+    this.position = [];
+    this.container = pointerContainer;
+}
+
+point.prototype.setPosition = function(fingerPositionArray){
+    // this.oldPosition = [];
+    // for(var i in fingerPositionArray){
+    //     this.oldPosition[i] = {x: fingerPositionArray[i].x, y: fingerPositionArray[i].y};
+    // }
+    this.position = fingerPositionArray;
+}
+
+point.prototype.draw = function(){
+    this.container.clear();
+    this.container.lineStyle(2, 0xe0b6b6, 1);
+    this.container.beginFill(0xe0b6b6, 0.7);
+    for(var i in this.position){
+        this.container.drawCircle(this.position[i].x, this.position[i].y, 15);
+    }
+    this.container.endFill();
+}
+
+var pointerContainer = new PIXI.Graphics();
+stage.addChild(pointerContainer);
+var Pointer = new point(pointerContainer);
+
+// start animating
+animateGame();
+
 function animateGame() {
+    Pointer.draw();
 
     requestAnimationFrame(animateGame);
 
