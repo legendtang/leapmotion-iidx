@@ -14,6 +14,13 @@ basicPanel.beginFill(0x646464, 0.6);
 basicPanel.lineStyle(3, 0x000, 1);
 basicPanel.drawRect((width - basicPanelWidth) / 2, -3, basicPanelWidth, height + 6);
 
+var texture = PIXI.Texture.fromVideo('testVideo.mp4');
+var videoSprite = new PIXI.Sprite(texture);
+
+videoSprite.width = renderer.width;
+videoSprite.height = renderer.height;
+
+stage.addChild(videoSprite);
 stage.addChild(basicPanel);
 
 // start animating
