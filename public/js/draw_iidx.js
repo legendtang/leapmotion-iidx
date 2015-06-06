@@ -1,8 +1,8 @@
 var height = window.innerHeight;
 var width = window.innerWidth;
-var basicPanelWidth = 500;
+var basicPanelWidth = 600;
 var basicPanelLineWidth = 5;
-var markerPanelWidth = 440;
+var markerPanelWidth = 540;
 var markerPanelTextureRadius = 30;
 var markerPanelTextureWidth = markerPanelWidth - 60;
 var markerPanelTextureLineWidth = 3;

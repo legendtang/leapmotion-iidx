@@ -52,77 +52,168 @@ function init() {
     // Getting the stats in the right position
     stats = new Stats();
 
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.bottom = '0px';
-    stats.domElement.style.right = '0px';
-    stats.domElement.style.zIndex = '999';
+    stats.domElement.style.position  = 'absolute';
+    stats.domElement.style.bottom    = '0px';
+    stats.domElement.style.right     = '0px';
+    stats.domElement.style.zIndex    = '999';
 
-    document.body.appendChild(stats.domElement);
+    document.body.appendChild( stats.domElement );
 
 
     // Setting up our Renderer
     renderer = new THREE.WebGLRenderer();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    container.appendChild( renderer.domElement );
 
 
     // Making sure our renderer is always the right size
-    window.addEventListener('resize', onWindowResize, false);
+    window.addEventListener( 'resize', onWindowResize , false );
+
+    
+   
+    leftHand = new ConnectedHand( controller );
+    leftHand.addToScene( scene );
+
+    rightHand = new ConnectedHand( controller );
+    rightHand.addToScene( scene );
+    
+    var geo = new THREE.IcosahedronGeometry( 2 , 1 );
+    var mat = new THREE.MeshNormalMaterial();
+
+    var joint = new THREE.Object3D();
+
+    var mesh = new THREE.Mesh(geo ,  mat );
+    joint.add( mesh );
+
+   
+    var connection = new THREE.Object3D();
+
+    var squisher = new THREE.Object3D();
+
+    var mat = new THREE.LineBasicMaterial();
+    mat.color.setHSL( .0 , .9 , .6 );
+
+    var line = createFlatCircle( -40 , 20 , 20 , mat );
+    squisher.add( line );
+    var line = createFlatCircle( -40 , 10 , 20 , mat );
+    squisher.add( line );
+    
+    var mat = new THREE.LineBasicMaterial();
+    mat.color.setHSL( .05 , .9 , .6 );
+
+    var line = createFlatCircle( -15 , 15 , 20 , mat );
+    squisher.add( line );
+    var line = createFlatCircle( -15 , 12 , 20 , mat );
+    squisher.add( line );
 
 
+    var mat = new THREE.LineBasicMaterial();
+    mat.color.setHSL( .1 , .9 , .6 );
 
-    leftHand = new ConnectedHand(controller);
-    leftHand.addToScene(scene);
+    var line = createFlatCircle( 5 , 10 , 20 , mat );
+    squisher.add( line );
+    var line = createFlatCircle( 5 , 8 , 20 , mat );
+    squisher.add( line );
 
-    rightHand = new ConnectedHand(controller);
-    rightHand.addToScene(scene);
+    
+    var mat = new THREE.LineBasicMaterial();
+    mat.color.setHSL( .1 , .9 , .6 );
+
+    var line = createFlatCircle( 30 , 6 , 20 , mat );
+    squisher.add( line );
+    var line = createFlatCircle( 30 , 4 , 20 , mat );
+    squisher.add( line );
 
 
-    var geo = new THREE.CubeGeometry(1, 1, 1);
-    var mat = new THREE.MeshBasicMaterial({
-        color: 0xc0ffee,
-        transparent: true,
-        opacity: .5
-    });
-    var jointMesh = new THREE.Mesh(geo, mat);
+    squisher.scale.y = .01;
+    squisher.scale.x = .12;
+    squisher.scale.z = .12;
 
-    var connectionMesh = new THREE.Mesh(geo, mat);
+    connection.add( squisher );
 
-    var centerMesh = new THREE.Mesh(geo, mat);
-    centerMesh.scale.x = 10;
-    centerMesh.scale.z = 10;
+    palm = new THREE.Object3D();
 
-    leftHand.createFingers(jointMesh, connectionMesh);
-    leftHand.createPalm(jointMesh, connectionMesh, centerMesh);
+    
+    for( var i = 0; i < 8; i++ ){
+      var mat = new THREE.LineBasicMaterial();
+      mat.color.setHSL( .4 + ( i * .01 ) , .9 , .6 );
+      var line = createFlatCircle( -1  , 4  , 20 , mat );
+      line.position.x = Math.cos(Math.PI * (i) / 4) * (6);
+      line.position.z = Math.sin(Math.PI * (i) / 4) * (6);
+      palm.add( line );
+    }
+
+    leftHand.createFingers( joint , connection );
+    leftHand.createPalm( joint , connection , palm );
+
+    rightHand.createFingers( joint , connection );
+    rightHand.createPalm( joint , connection , palm );
+
 
 
     controller.connect();
 
 
-}
+  }
+
+  function createCircleGeo( radius , count ){
+
+    var geometry = new THREE.Geometry();
+
+    for( var i = 0; i <= count; i++ ){
+  
+      var t = ( i / count ) * Math.PI * 2;
+
+      v = new THREE.Vector3(
+        Math.cos( t ) * radius,
+        0,
+        Math.sin( t ) * radius
+      );
+      geometry.vertices.push( v );
 
 
-function animate() {
+    }
+
+    return geometry;
+
+  }
+
+  function createFlatCircle( y , radius , count , mat ){
+
+    var geo = createCircleGeo( radius , count );
+
+    var line = new THREE.Line( geo , mat );
+    line.rotation.x = Math.PI //2;
+
+
+    line.position.y = y;
+
+    return line;
+
+
+  }
+
+  function animate(){
 
     // Tells us which hand to update with
-    leftHand.update('left');
-    rightHand.update('right');
+    leftHand.update( 'left' );
+    rightHand.update( 'right' );
 
     stats.update();
 
-    renderer.render(scene, camera);
+    renderer.render( scene , camera );
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame( animate );
 
-}
+  }
 
-// Resets the renderer to be the proper size
-function onWindowResize() {
+  // Resets the renderer to be the proper size
+  function onWindowResize(){
 
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize( window.innerWidth, window.innerHeight );
 
-}
+  }

@@ -144,6 +144,9 @@
     this.palm.joints[4].position  = this.leapToScene( fingers[4].mcpPosition );
     this.palm.joints[5].position  = rear;
 
+    // for (var i = 0; i <= 4; i++)
+    //   console.log(fingers[i].pipPosition);
+
     this.palm.center.position     = center;
 
     var rotationMatrix  = this.rotationMatrix( hand.direction, hand.palmNormal );
