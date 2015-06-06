@@ -112,6 +112,12 @@ var Pointer = new point(pointerContainer);
 animateGame();
 
 function animateGame() {
+    var pointersArray = [];
+    for(var i=0; i<=4; i++){
+        pointersArray.push({x: (rightHand.fingers[i].connections[2].position.x * 8 + width / 2) , y: (-rightHand.fingers[i].connections[2].position.y * 8 + 500) });
+    }
+    Pointer.setPosition(pointersArray);
+    // console.log(pointersArray);
     Pointer.draw();
 
     requestAnimationFrame(animateGame);
