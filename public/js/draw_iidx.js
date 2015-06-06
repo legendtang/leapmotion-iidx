@@ -116,6 +116,17 @@ bgm.oncanplay = function() {
     this.play();
 };
 
+$.ajax({
+    url: "./beatmaps/json/26044 Wada Kouji - Butter-Fly (TV Edit)/Wada Kouji - Butter-Fly (TV Edit) (Ekaru) [Old Style].osu",
+    method: "get",
+    dataType: "json",
+    success: function (beatmap) {
+        // beatmap json is here
+        console.log(beatmap);
+        $('audio').attr('src', './beatmaps/26044 Wada Kouji - Butter-Fly (TV Edit)/ButterFly.mp3');
+    }
+})
+
 // bgm.onended = function() {
 //     stage.removeChild(videoSprite);
 //     texture.destory();
