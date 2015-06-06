@@ -352,7 +352,7 @@ function Marker() {
     var _this = this;
     _this.markerArray = [];
 
-    this.create = function(slot) {
+    this.create = function(slot, startTime) {
         if (slot == 64 || slot == 448)
             var marker = new PIXI.Sprite.fromImage("../images/marker0.png");
         else var marker = new PIXI.Sprite.fromImage("../images/marker1.png");
@@ -363,6 +363,7 @@ function Marker() {
 
         marker.used = 0;
         marker.type = parseInt(slot / 120);
+        marker.startTime = startTime;
 
         // marker.width = tunnelWidth;
 
@@ -379,13 +380,13 @@ function Marker() {
 
         function updateMarker(element, index) {
             element.position.y += 1000 / ticker.FPS;
-            if ( Math.abs( ( height - buttonPanelHeight - 50 - 37.5 ) - element.position.y ) <= 12.5) {
-                console.log(Math.abs( ( height - buttonPanelHeight - 50 - 37.5 ) - element.position.y) );
-                checkKeyDown( element.type , false );
+            if ( Math.abs( ticker.lastTime - globalMusicOffset - element.startTime ) >= 700 && Math.abs( ticker.lastTime - element.startTime ) <= 1400) {
+                // console.log(Math.abs( ( height - buttonPanelHeight - 25 - 10 - 37.5 ) - element.position.y) );
+                checkKeyDown( element, element.type , false );
             }
-            if ( Math.abs( ( height - buttonPanelHeight - 50) - element.position.y ) <= 25) {
-                console.log(Math.abs( ( height - buttonPanelHeight - 50) - element.position.y) );
-                checkKeyDown( element.type , true );
+            if ( Math.abs( ticker.lastTime - globalMusicOffset - element.startTime ) < 700 ) {
+
+                checkKeyDown( element, element.type , true );
             }
 
             if (element.position.y >= height - buttonPanelHeight) {
@@ -397,10 +398,13 @@ function Marker() {
 
 var marker = new Marker();
 
-function checkKeyDown ( type, pos ) {
+function checkKeyDown ( element, type, pos ) {
 
     if (keyMap[type].direction == 'down') {
         judgementDisplay( pos );
+        if( !pos ) {
+            stage.removeChild(element);
+        }
     } else return;
 
 };
@@ -409,7 +413,7 @@ function searchObject(hitObjects) {
     for (var i = 0; i < hitObjects.length; i++) {
         for (var j = 0; j < 4; j++) {
             if (i + j < hitObjects.length && ticker !== undefined && Math.abs(ticker.lastTime - ( hitObjects[i + j].startTime) - globalMusicOffset) < (1 / ticker.FPS * 400))
-                marker.create(hitObjects[i + j].position[0]);
+                marker.create(hitObjects[i + j].position[0], hitObjects[i + j].startTime);
         };
     };
 };
