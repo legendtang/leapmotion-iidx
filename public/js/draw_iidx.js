@@ -15,6 +15,8 @@ var dropSpeed = 10;
 
 var tunnelWidth = markerPanelWidth / 4 - 5 * 3;
 
+var globalMusicOffset = 5000;
+
 var currentMap;
 
 var gameRenderer = PIXI.autoDetectRenderer(width, height, {
@@ -27,7 +29,7 @@ var gameRenderer = PIXI.autoDetectRenderer(width, height, {
 // create the root of the scene graph
 var stage = new PIXI.Container();
 
-var ticker = new PIXI.ticker.Ticker();
+var ticker;
 
 // draw main panel, (x, y, width, height)
 var basicPanel = new PIXI.Graphics();
@@ -119,6 +121,7 @@ bgm.oncanplay = function() {
 
     stage.addChild(videoSprite);
     stage.setChildIndex(videoSprite, 0);
+    ticker = new PIXI.ticker.Ticker()
     this.play();
 };
 
@@ -128,9 +131,11 @@ $.ajax({
     dataType: "json",
     success: function (beatmap) {
         // beatmap json is here
-        console.log(beatmap);
+        // console.log(beatmap);
         currentMap = beatmap;
-        $('audio').attr('src', './beatmaps/120838 Ryu- - We\'re so Happy/Ryu - We\'re so Happy.mp3');
+        // setTimeout(function () {
+            $('audio').attr('src', './beatmaps/120838 Ryu- - We\'re so Happy/Ryu - We\'re so Happy.mp3');
+        // }, globalMusicOffset);
     }
 })
 
@@ -177,7 +182,7 @@ function Marker() {
     _this.markerArray = [];
 
     this.create = function( slot ) {
-        if ( !slot || slot == 3)
+        if ( slot == 64 || slot == 448)
             var marker = new PIXI.Sprite.fromImage("../images/marker0.png");
         else var marker = new PIXI.Sprite.fromImage("../images/marker1.png");
         stage.addChild(marker);
@@ -187,7 +192,7 @@ function Marker() {
 
         // marker.width = tunnelWidth;
 
-        marker.position.x = (width - markerPanelTextureWidth) / 2 + slot * tunnelWidth;
+        marker.position.x = (width - markerPanelTextureWidth) / 2 + parseInt(slot / 120) * tunnelWidth;
         marker.position.y = -20;
 
         stage.addChild(marker);
@@ -198,7 +203,7 @@ function Marker() {
     this.update = function() {
         _this.markerArray.forEach(updateMarker);
         function updateMarker (element){
-            element.position.y += dropSpeed;
+            element.position.y += 1000 / ticker.FPS;
             if (element.position.y >= height - buttonPanelHeight -25) {
                 stage.removeChild(element);
             };
@@ -207,13 +212,21 @@ function Marker() {
 };
 
 var marker = new Marker();
-setInterval(marker.create, 1000);
+// setInterval(marker.create, 1000);
 
 
 function markerPosition(startTime) {
 
 };
 
+function searchObject ( hitObjects ) {
+    for (var i = 0; i < hitObjects.length; i++) {
+        for (var j = 0; j < 4; j++) {
+            if( i + j < hitObjects.length && ticker !== undefined && Math.abs(ticker.lastTime - ( hitObjects[i + j].startTime )) < (1 / ticker.FPS * 350) )
+                marker.create( hitObjects[i + j].position[0] );
+        };
+    };
+};
 
 
 // start animating
@@ -228,14 +241,22 @@ function animateGame() {
     // console.log(pointersArray);
     Pointer.draw();
 
-    if () {};
+    if ( currentMap !== undefined) {
+        searchObject( currentMap.hitObjects );
+    };
+
+    // console.log(currentMap);
+    // console.log(currentMap.hitObjects);
+
     marker.update();
 
     requestAnimationFrame(animateGame);
 
+    // console.log
     // console.log(ticker.FPS);
 
-    ticker.update();
+    if( ticker !== undefined)
+        ticker.update();
 
     // console.log(ticker.lastTime);
     // render the root container
