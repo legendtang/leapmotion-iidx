@@ -41,9 +41,9 @@ basicPanel.beginFill(0xFFF, 0);
 basicPanel.lineStyle(3, 0xEF6868, 1);
 basicPanel.drawPolygon([
     (width - markerPanelTextureWidth) / 2,
-    - markerPanelTextureRadius - markerPanelTextureLineWidth,
+    - markerPanelTextureLineWidth,
     (width - markerPanelTextureWidth) / 2 + markerPanelTextureWidth,
-    - markerPanelTextureRadius - markerPanelTextureLineWidth,
+    - markerPanelTextureLineWidth,
     (width - markerPanelTextureWidth) / 2 + markerPanelTextureWidth,
     height - buttonPanelHeight - 50,
     (width - markerPanelTextureWidth) / 2 + markerPanelTextureWidth - 20,
@@ -58,6 +58,31 @@ basicPanel.endFill();
 basicPanel.beginFill(0xEF6868, 1);
 basicPanel.moveTo((width - markerPanelTextureWidth) / 2 + 10, height - buttonPanelHeight - 25);
 basicPanel.lineTo((width - markerPanelTextureWidth) / 2 + markerPanelTextureWidth - 10, height - buttonPanelHeight - 25);
+basicPanel.endFill();
+
+basicPanel.beginFill(0xFFF, 0);
+basicPanel.lineStyle(3, 0xEF6868, 1);
+basicPanel.drawPolygon([
+    (width - markerPanelTextureWidth) / 2,
+    height,
+    (width - markerPanelTextureWidth) / 2,
+    height - 50,
+    (width - markerPanelTextureWidth) / 2 + 20,
+    height - 50 - 20,
+    (width + markerPanelTextureWidth) / 2 - 20,
+    height - 50 - 20,
+    (width + markerPanelTextureWidth) / 2,
+    height - 50,
+    (width + markerPanelTextureWidth) / 2,
+    height,
+]);
+basicPanel.endFill();
+
+basicPanel.beginFill(0xEF6868, 1);
+for (var i = 1; i <= 3; i++) {
+    basicPanel.moveTo((width - markerPanelTextureWidth) / 2 + i * (markerPanelWidth / 4 - 5 * 3), height - 20 - 50);
+    basicPanel.lineTo((width - markerPanelTextureWidth) / 2 + i * (markerPanelWidth / 4 - 5 * 3), height);
+};
 basicPanel.endFill();
 
 stage.addChild(basicPanel);
@@ -113,8 +138,8 @@ animateGame();
 
 function animateGame() {
     var pointersArray = [];
-    for(var i=0; i<=4; i++){
-        pointersArray.push({x: (rightHand.fingers[i].connections[2].position.x * 8 + width / 2) , y: (-rightHand.fingers[i].connections[2].position.y * 8 + 500) });
+    for(var i=1; i<=4; i++){
+        pointersArray.push({x: (rightHand.fingers[i].connections[2].position.x * 8 + width / 2) , y: (-rightHand.fingers[i].connections[2].position.y * 25 + 600) });
     }
     Pointer.setPosition(pointersArray);
     // console.log(pointersArray);
