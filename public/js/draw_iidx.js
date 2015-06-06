@@ -39,6 +39,24 @@ var keyMap = [
         direction: null
     },
 ];
+var oldKeyMap = [
+    {
+        keyCode: 68,
+        direction: null
+    },
+    {
+        keyCode: 70,
+        direction: null
+    },
+    {
+        keyCode: 74,
+        direction: null
+    },
+    {
+        keyCode: 75,
+        direction: null
+    },
+];
 
 var gameRenderer = PIXI.autoDetectRenderer(width, height, {
     backgroundColor: 0xFFFFFF,
@@ -268,7 +286,8 @@ button.prototype.draw = function() {
                 index = 4;
                 break;
         }
-        if(keyMap[i].direction == 'down'){
+        if(keyMap[i].direction == 'down' && oldKeyMap[i].direction != 'down'){
+            oldKeyMap[i].direction = 'down';
             this.container.lineStyle(0);
             this.container.beginFill(0xEF6868, 0.3);
             this.container.drawPolygon([
@@ -292,7 +311,8 @@ button.prototype.draw = function() {
             ]);
             this.container.endFill();
         }
-        if(keyMap[i].direction == 'up'){
+        if(keyMap[i].direction == 'up' && oldKeyMap[i].direction != 'up'){
+            oldKeyMap[i].direction = null;
             this.container.clear();
             keyMap[i].direction = null;
         }
