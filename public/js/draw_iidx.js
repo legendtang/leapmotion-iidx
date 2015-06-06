@@ -9,6 +9,10 @@ var markerPanelTextureLineWidth = 3;
 var healPanelWidth = (basicPanelWidth - markerPanelWidth) / 2;
 var buttonPanelHeight = 100;
 
+var dropInitPosition = -1000 + (height - buttonPanelHeight - 25);
+
+var dropSpeed = 10;
+
 var tunnelWidth = markerPanelWidth/4-5*3;
 
 var gameRenderer = PIXI.autoDetectRenderer(width, height, {
@@ -161,31 +165,49 @@ var Pointer = new point(pointerContainer);
 
 // Marker Sprite
 
-var markerArray = [];
+// var markerArray = [];
 
-var totalMarker = 20;
+// var totalMarker = 20;
 
-for (var i = 0; i <= totalMarker; i++) {
+function Marker() {
+    var _this = this;
+    _this.markerArray = [];
 
-    var marker = new PIXI.Sprite.fromImage("../images/marker0.png");
-    stage.addChild(marker);
+    this.create = function() {
+        var marker = new PIXI.Sprite.fromImage("../images/marker0.png");
+        stage.addChild(marker);
 
-    marker.anchor.x = 0;
-    marker.anchor.y = 0;
+        marker.anchor.x = 0;
+        marker.anchor.y = 0;
 
-    marker.width = tunnelWidth;
+        // marker.width = tunnelWidth;
 
-    marker.position.x = (width - markerPanelTextureWidth) / 2;
-    marker.position.y = 0;
+        marker.position.x = (width - markerPanelTextureWidth) / 2;
+        marker.position.y = -20;
 
-    stage.addChild(marker);
+        stage.addChild(marker);
 
-    markerArray.push(marker);
-}
+        _this.markerArray.push(marker);
+    };
+
+    this.update = function() {
+        _this.markerArray.forEach(updateMarker);
+        function updateMarker (element){
+            element.position.y += dropSpeed;
+            if (element.position.y >= height - buttonPanelHeight -25) {
+                stage.removeChild(element);
+            };
+        }
+    };
+};
+
+var marker = new Marker();
+setInterval(marker.create, 1000);
+
 
 function markerPosition(startTime) {
 
-}
+};
 
 
 
@@ -200,10 +222,16 @@ function animateGame() {
     Pointer.setPosition(pointersArray);
     // console.log(pointersArray);
     Pointer.draw();
+          
+    marker.update();
 
     requestAnimationFrame(animateGame);
 
-    console.log(ticker.FPS);
+    // console.log(ticker.FPS);
+
+    ticker.update();
+
+    // console.log(ticker.lastTime);
     // render the root container
     gameRenderer.render(stage);
 }
