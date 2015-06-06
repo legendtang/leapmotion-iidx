@@ -215,19 +215,38 @@ var marker = new Marker();
 // setInterval(marker.create, 1000);
 
 
-function markerPosition(startTime) {
-
-};
-
 function searchObject ( hitObjects ) {
     for (var i = 0; i < hitObjects.length; i++) {
         for (var j = 0; j < 4; j++) {
-            if( i + j < hitObjects.length && ticker !== undefined && Math.abs(ticker.lastTime - ( hitObjects[i + j].startTime )) < (1 / ticker.FPS * 350) )
+            if( i + j < hitObjects.length && ticker !== undefined && Math.abs(ticker.lastTime - ( hitObjects[i + j].startTime )) < (1 / ticker.FPS * 400) )
                 marker.create( hitObjects[i + j].position[0] );
         };
     };
 };
 
+function judgementDisplay ( status ) {
+    if (status) {
+        var style = {font:"50px Lucida Console", fill:"red", align: "center", stroke: "#EF6868", strokeThickness: 6};
+     
+        var text = new PIXI.Text("GOOD", style);
+    } else {
+        var style = {font:"50px Lucida Console", fill:"#666", align: "center", stroke: "white", strokeThickness: 6};
+     
+        var text = new PIXI.Text("MISS", style);
+    }
+
+
+    text.anchor.x = 0.5;
+    text.anchor.y = 0.5;
+
+    text.position.x = width / 2;
+    text.position.y = height - buttonPanelHeight - 50;
+     
+    stage.addChild(text);
+    setTimeout(function () {
+        stage.removeChild(text);
+    }, 400);
+}
 
 // start animating
 animateGame();
