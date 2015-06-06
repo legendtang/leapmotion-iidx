@@ -10,15 +10,13 @@ var buttonPanelHeight = 180;
 var buttonPanelMarginTop = 50;
 var markerWidth = 120;
 
-var globalOffset = -1000;
-
 var dropInitPosition = -1000 + (height - buttonPanelHeight - 25);
 
 var dropSpeed = 10;
 
 var tunnelWidth = markerPanelWidth / 4 - 5 * 3;
 
-var globalMusicOffset = 5000;
+var globalMusicOffset = 500;
 
 var currentMap;
 var keyMap = [
@@ -363,9 +361,12 @@ function Marker() {
         marker.anchor.x = 0;
         marker.anchor.y = 0;
 
+        marker.used = 0;
+        marker.type = parseInt(slot / 120);
+
         // marker.width = tunnelWidth;
 
-        marker.position.x = (width - markerPanelTextureWidth) / 2 + parseInt(slot / 120) * tunnelWidth;
+        marker.position.x = (width - markerPanelTextureWidth) / 2 + marker.type * tunnelWidth;
         marker.position.y = -20;
 
         stage.addChild(marker);
@@ -376,9 +377,18 @@ function Marker() {
     this.update = function() {
         _this.markerArray.forEach(updateMarker);
 
-        function updateMarker(element) {
+        function updateMarker(element, index) {
             element.position.y += 1000 / ticker.FPS;
-            if (element.position.y >= height - buttonPanelHeight - 25) {
+            if ( Math.abs( ( height - buttonPanelHeight - 50 - 37.5 ) - element.position.y ) <= 12.5) {
+                console.log(Math.abs( ( height - buttonPanelHeight - 50 - 37.5 ) - element.position.y) );
+                checkKeyDown( element.type , false );
+            }
+            if ( Math.abs( ( height - buttonPanelHeight - 50) - element.position.y ) <= 25) {
+                console.log(Math.abs( ( height - buttonPanelHeight - 50) - element.position.y) );
+                checkKeyDown( element.type , true );
+            }
+
+            if (element.position.y >= height - buttonPanelHeight) {
                 stage.removeChild(element);
             };
         }
@@ -386,12 +396,19 @@ function Marker() {
 };
 
 var marker = new Marker();
-// setInterval(marker.create, 1000);
+
+function checkKeyDown ( type, pos ) {
+
+    if (keyMap[type].direction == 'down') {
+        judgementDisplay( pos );
+    } else return;
+
+};
 
 function searchObject(hitObjects) {
     for (var i = 0; i < hitObjects.length; i++) {
         for (var j = 0; j < 4; j++) {
-            if (i + j < hitObjects.length && ticker !== undefined && Math.abs(ticker.lastTime - ( hitObjects[i + j].startTime) + globalOffset) < (1 / ticker.FPS * 400))
+            if (i + j < hitObjects.length && ticker !== undefined && Math.abs(ticker.lastTime - ( hitObjects[i + j].startTime) - globalMusicOffset) < (1 / ticker.FPS * 400))
                 marker.create(hitObjects[i + j].position[0]);
         };
     };
