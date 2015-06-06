@@ -121,13 +121,13 @@ bgm.oncanplay = function() {
 };
 
 $.ajax({
-    url: "./beatmaps/json/26044 Wada Kouji - Butter-Fly (TV Edit)/Wada Kouji - Butter-Fly (TV Edit) (Ekaru) [Old Style].osu",
+    url: "./beatmaps/json/120838 Ryu- - We're so Happy/Ryu - We're so Happy (Spy) [4K BASIC].osu",
     method: "get",
     dataType: "json",
     success: function (beatmap) {
         // beatmap json is here
         console.log(beatmap);
-        $('audio').attr('src', './beatmaps/26044 Wada Kouji - Butter-Fly (TV Edit)/ButterFly.mp3');
+        $('audio').attr('src', './beatmaps/120838 Ryu- - We\'re so Happy/Ryu - We\'re so Happy.mp3');
     }
 })
 
