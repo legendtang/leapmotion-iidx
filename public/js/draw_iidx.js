@@ -13,7 +13,9 @@ var dropInitPosition = -1000 + (height - buttonPanelHeight - 25);
 
 var dropSpeed = 10;
 
-var tunnelWidth = markerPanelWidth/4-5*3;
+var tunnelWidth = markerPanelWidth / 4 - 5 * 3;
+
+var currentMap;
 
 var gameRenderer = PIXI.autoDetectRenderer(width, height, {
     backgroundColor: 0xFFFFFF,
@@ -127,6 +129,7 @@ $.ajax({
     success: function (beatmap) {
         // beatmap json is here
         console.log(beatmap);
+        currentMap = beatmap;
         $('audio').attr('src', './beatmaps/26044 Wada Kouji - Butter-Fly (TV Edit)/ButterFly.mp3');
     }
 })
@@ -173,8 +176,10 @@ function Marker() {
     var _this = this;
     _this.markerArray = [];
 
-    this.create = function() {
-        var marker = new PIXI.Sprite.fromImage("../images/marker0.png");
+    this.create = function( slot ) {
+        if ( !slot || slot == 3)
+            var marker = new PIXI.Sprite.fromImage("../images/marker0.png");
+        else var marker = new PIXI.Sprite.fromImage("../images/marker1.png");
         stage.addChild(marker);
 
         marker.anchor.x = 0;
@@ -182,7 +187,7 @@ function Marker() {
 
         // marker.width = tunnelWidth;
 
-        marker.position.x = (width - markerPanelTextureWidth) / 2;
+        marker.position.x = (width - markerPanelTextureWidth) / 2 + slot * tunnelWidth;
         marker.position.y = -20;
 
         stage.addChild(marker);
@@ -222,7 +227,8 @@ function animateGame() {
     Pointer.setPosition(pointersArray);
     // console.log(pointersArray);
     Pointer.draw();
-          
+
+    if () {};
     marker.update();
 
     requestAnimationFrame(animateGame);
