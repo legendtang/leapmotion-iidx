@@ -192,8 +192,10 @@ stage.addChild(cover);
 var bgm = document.getElementById('bgm');
 
 bgm.oncanplay = function() {
-    var texture = PIXI.Texture.fromVideo('./beatmaps/26044 Wada Kouji - Butter-Fly (TV Edit)/Digimon Adventure OP.mp4');
-    var videoSprite = new PIXI.Sprite(texture);
+    // var texture = PIXI.Texture.fromVideo('./beatmaps/26044 Wada Kouji - Butter-Fly (TV Edit)/Digimon Adventure OP.mp4');
+    // var videoSprite = new PIXI.Sprite(texture);
+
+    var videoSprite = new PIXI.Sprite.fromImage("../beatmaps/120838 Ryu- - We're so Happy/BG.jpg");
 
     videoSprite.width = gameRenderer.width;
     videoSprite.height = gameRenderer.height;
