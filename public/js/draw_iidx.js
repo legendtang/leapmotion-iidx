@@ -63,7 +63,6 @@ basicPanel.moveTo((width - markerPanelTextureWidth) / 2 + 10, height - buttonPan
 basicPanel.lineTo((width - markerPanelTextureWidth) / 2 + markerPanelTextureWidth - 10, height - buttonPanelHeight - 25);
 basicPanel.endFill();
 
-<<<<<<< HEAD
 basicPanel.beginFill(0xFFF, 0);
 basicPanel.lineStyle(3, 0xEF6868, 1);
 basicPanel.drawPolygon([
