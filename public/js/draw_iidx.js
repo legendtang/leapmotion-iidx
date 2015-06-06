@@ -9,6 +9,8 @@ var markerPanelTextureLineWidth = 3;
 var healPanelWidth = (basicPanelWidth - markerPanelWidth) / 2;
 var buttonPanelHeight = 100;
 
+var tunnelWidth = markerPanelWidth/4-5*3;
+
 var gameRenderer = PIXI.autoDetectRenderer(width, height, {
     backgroundColor: 0xFFFFFF,
     transparent: true,
@@ -55,10 +57,21 @@ basicPanel.drawPolygon([
 ]);
 basicPanel.endFill();
 
+//horizontal line
 basicPanel.beginFill(0xEF6868, 1);
 basicPanel.moveTo((width - markerPanelTextureWidth) / 2 + 10, height - buttonPanelHeight - 25);
 basicPanel.lineTo((width - markerPanelTextureWidth) / 2 + markerPanelTextureWidth - 10, height - buttonPanelHeight - 25);
 basicPanel.endFill();
+
+//tunnel saperator
+basicPanel.beginFill(0xEF6868, 1);
+basicPanel.moveTo((width - markerPanelTextureWidth) / 2 + tunnelWidth * 1,0);
+basicPanel.lineTo((width - markerPanelTextureWidth) / 2 + tunnelWidth * 1,height - buttonPanelHeight - 25);
+basicPanel.moveTo((width - markerPanelTextureWidth) / 2 + tunnelWidth * 2,0);
+basicPanel.lineTo((width - markerPanelTextureWidth) / 2 + tunnelWidth * 2,height - buttonPanelHeight - 25);
+basicPanel.moveTo((width - markerPanelTextureWidth) / 2 + tunnelWidth * 3,0);
+basicPanel.lineTo((width - markerPanelTextureWidth) / 2 + tunnelWidth * 3,height - buttonPanelHeight - 25);
+basicPanel.endFill()
 
 stage.addChild(basicPanel);
 
