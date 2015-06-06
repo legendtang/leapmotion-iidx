@@ -61,7 +61,7 @@ basicPanel.drawRect((width - basicPanelWidth) / 2, -basicPanelLineWidth, basicPa
 basicPanel.endFill();
 
 //markerPanel
-basicPanel.beginFill(0x000, 0.7);
+basicPanel.beginFill(0x000, 1);
 basicPanel.lineStyle(1, 0x000, 1);
 basicPanel.drawRect((width - basicPanelWidth) / 2 + healPanelWidth, 0, markerPanelWidth, height);
 basicPanel.endFill();
@@ -159,6 +159,35 @@ light.position.x = (width - markerPanelTextureWidth) / 2;
 light.position.y = height - buttonPanelHeight - 105;
 light.width = 480;
 
+var cover = new PIXI.Graphics();
+cover.beginFill(0x000, 1);
+cover.lineStyle(0);
+cover.drawPolygon([
+    (width - basicPanelWidth) / 2 + healPanelWidth,
+    0,
+    (width - markerPanelWidth) / 2 + healPanelWidth - 1.5,
+    0,
+    (width - markerPanelWidth) / 2 + healPanelWidth - 1.5,
+    height - buttonPanelHeight - 50,
+    (width - markerPanelWidth) / 2 + 20 + healPanelWidth - 1.5,
+    height - buttonPanelHeight,
+    (width - basicPanelWidth) / 2 + healPanelWidth,
+    height - buttonPanelHeight
+]);
+cover.drawPolygon([
+    width - ((width - basicPanelWidth) / 2 + healPanelWidth),
+    0,
+    width - ((width - markerPanelWidth) / 2 + healPanelWidth - 3),
+    0,
+    width - ((width - markerPanelWidth) / 2 + healPanelWidth - 3),
+    height - buttonPanelHeight - 50,
+    width - ((width - markerPanelWidth) / 2 + 20 + healPanelWidth - 3),
+    height - buttonPanelHeight,
+    width - ((width - basicPanelWidth) / 2 + healPanelWidth),
+    height - buttonPanelHeight
+]);
+cover.endFill();
+stage.addChild(cover);
 
 var bgm = document.getElementById('bgm');
 
