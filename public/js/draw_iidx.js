@@ -21,6 +21,8 @@ var gameRenderer = PIXI.autoDetectRenderer(width, height, {
 // create the root of the scene graph
 var stage = new PIXI.Container();
 
+var ticker = new PIXI.ticker.Ticker();
+
 // draw main panel, (x, y, width, height)
 var basicPanel = new PIXI.Graphics();
 //basicPanel background
@@ -146,6 +148,36 @@ var pointerContainer = new PIXI.Graphics();
 stage.addChild(pointerContainer);
 var Pointer = new point(pointerContainer);
 
+// Marker Sprite
+
+var markerArray = [];
+
+var totalMarker = 20;
+
+for (var i = 0; i <= totalMarker; i++) {
+
+    var marker = new PIXI.Sprite.fromImage("../images/marker0.png");
+    stage.addChild(marker);
+
+    marker.anchor.x = 0;
+    marker.anchor.y = 0;
+
+    marker.width = tunnelWidth;
+
+    marker.position.x = (width - markerPanelTextureWidth) / 2;
+    marker.position.y = 0;
+
+    stage.addChild(marker);
+
+    markerArray.push(marker);
+}
+
+function markerPosition(startTime) {
+
+}
+
+
+
 // start animating
 animateGame();
 
@@ -160,6 +192,7 @@ function animateGame() {
 
     requestAnimationFrame(animateGame);
 
+    console.log(ticker.FPS);
     // render the root container
     gameRenderer.render(stage);
 }
