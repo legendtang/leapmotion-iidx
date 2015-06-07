@@ -250,9 +250,6 @@ function point(pointerContainer) {
 
 point.prototype.setPosition = function(fingerPositionArray) {
     this.position = fingerPositionArray;
-    // console.log(keyMap[0].direction);
-    
-    // console.log(fingerPositionArray[i]);
     var flag = 0;
     for(var k=0; k<=3; k++){
         for(var i in fingerPositionArray){
@@ -472,11 +469,11 @@ function animateGame() {
     var pointersArray = [];
     for (var i = 1; i <= 2; i++) {
         pointersArray.push({
-            x: (leftHand.fingers[i].connections[2].position.x * 10 + width / 2),
+            x: (leftHand.fingers[i].connections[2].position.x * 8 + width / 2),
             y: (-leftHand.fingers[i].connections[2].position.y * 20 + 600)
         });
         pointersArray.push({
-            x: (rightHand.fingers[i].connections[2].position.x * 10 + width / 2),
+            x: (rightHand.fingers[i].connections[2].position.x * 8 + width / 2),
             y: (-rightHand.fingers[i].connections[2].position.y * 20 + 600)
         });
     }
