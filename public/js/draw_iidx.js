@@ -409,8 +409,18 @@ function Marker() {
                 checkKeyDown( element, element.type , true );
             }
 
+
             if (element.position.y >= height - buttonPanelHeight) {
                 stage.removeChild(element);
+            }
+
+            if (element.position.y >= height - buttonPanelHeight + 50) {
+                // stage.removeChild(element);
+                if (element.used == 0) {
+                    judgementDisplay( false );
+                };
+                delete marker.markerArray[marker.markerArray.indexOf(element)];
+                
             };
         }
     };
@@ -421,9 +431,11 @@ var marker = new Marker();
 function checkKeyDown ( element, type, pos ) {
 
     if (keyMap[type].direction == 'down') {
+        element.used = 1;
         judgementDisplay( pos );
         if( !pos ) {
             stage.removeChild(element);
+            delete marker.markerArray[marker.markerArray.indexOf(element)];
         }
     } else return;
 
