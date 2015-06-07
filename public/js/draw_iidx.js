@@ -251,10 +251,11 @@ function point(pointerContainer) {
 point.prototype.setPosition = function(fingerPositionArray) {
     this.position = fingerPositionArray;
     // console.log(keyMap[0].direction);
-    for(var i in fingerPositionArray){
-        // console.log(fingerPositionArray[i]);
-        var flag = 0;
-        for(var k=0; k<=3; k++){
+    
+    // console.log(fingerPositionArray[i]);
+    var flag = 0;
+    for(var k=0; k<=3; k++){
+        for(var i in fingerPositionArray){
             // console.log(fingerPositionArray[i].x + "|" + ((width - markerPanelTextureWidth) / 2 + 120 * k));
             if(fingerPositionArray[i].x > (width - markerPanelTextureWidth) / 2 + markerPanelTextureLineWidth + markerWidth * k &&
             fingerPositionArray[i].x < (width - markerPanelTextureWidth) / 2 - markerPanelTextureLineWidth + markerWidth * (k + 1) &&
