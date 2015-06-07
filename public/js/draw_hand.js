@@ -202,7 +202,7 @@ function init() {
 
     stats.update();
 
-    // renderer.render( scene , camera );
+    renderer.render( scene , camera );
 
     requestAnimationFrame( animate );
 

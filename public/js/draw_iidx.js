@@ -14,6 +14,10 @@ var dropInitPosition = -1000 + (height - buttonPanelHeight - 25);
 
 var dropSpeed = 10;
 
+var combo = 0;
+
+var deltaCombo = 0;
+
 var tunnelWidth = markerPanelWidth / 4 - 5 * 3;
 
 var globalMusicOffset = 500;
@@ -418,6 +422,7 @@ function Marker() {
                 // stage.removeChild(element);
                 if (element.used == 0) {
                     judgementDisplay( false );
+                    combo = 0;
                 };
                 delete marker.markerArray[marker.markerArray.indexOf(element)];
                 
@@ -436,7 +441,7 @@ function checkKeyDown ( element, type, pos ) {
         if( !pos ) {
             stage.removeChild(element);
             delete marker.markerArray[marker.markerArray.indexOf(element)];
-        }
+        } else deltaCombo ++;
     } else return;
 
 };
@@ -455,10 +460,14 @@ function judgementDisplay ( status ) {
         var style = {font:"50px Lucida Console", fill:"red", align: "center", stroke: "#EF6868", strokeThickness: 6};
 
         var text = new PIXI.Text("GOOD", style);
+
+        // combo++;
     } else {
         var style = {font:"50px Lucida Console", fill:"#666", align: "center", stroke: "white", strokeThickness: 6};
 
         var text = new PIXI.Text("MISS", style);
+
+        // combo = 0;
     }
 
 
@@ -472,6 +481,26 @@ function judgementDisplay ( status ) {
     setTimeout(function () {
         stage.removeChild(text);
     }, 400);
+}
+
+function scoreDisplay ( combo ) {
+    if ( combo >= 5) {
+        var style = {font:"50px Lucida Console", fill:"#666", align: "center", stroke: "white", strokeThickness: 6};
+
+        var text = new PIXI.Text("COMBO:" + combo, style);
+
+        text.anchor.x = 0.5;
+        text.anchor.y = 0.5;
+
+        text.position.x = width / 2;
+        text.position.y = 50;
+
+        stage.addChild(text);
+        setTimeout(function () {
+            stage.removeChild(text);
+        }, 400);
+
+    }
 }
 
 // start animating
@@ -497,6 +526,8 @@ function animateGame() {
     };
 
     marker.update();
+
+    scoreDisplay( combo );
 
     Pointer.setPosition(pointersArray);
     Pointer.draw();
