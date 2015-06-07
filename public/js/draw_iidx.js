@@ -10,13 +10,15 @@ var buttonPanelHeight = 180;
 var buttonPanelMarginTop = 50;
 var markerWidth = 120;
 
+var globalOffset = -1000;
+
 var dropInitPosition = -1000 + (height - buttonPanelHeight - 25);
 
 var dropSpeed = 10;
 
 var tunnelWidth = markerPanelWidth / 4 - 5 * 3;
 
-var globalMusicOffset = 500;
+var globalMusicOffset = 5000;
 
 var currentMap;
 var keyMap = [
@@ -250,12 +252,8 @@ function point(pointerContainer) {
 
 point.prototype.setPosition = function(fingerPositionArray) {
     this.position = fingerPositionArray;
-    // console.log(keyMap[0].direction);
     for(var i in fingerPositionArray){
-        // console.log(fingerPositionArray[i]);
-        var flag = 0;
         for(var k=0; k<=3; k++){
-            // console.log(fingerPositionArray[i].x + "|" + ((width - markerPanelTextureWidth) / 2 + 120 * k));
             if(fingerPositionArray[i].x > (width - markerPanelTextureWidth) / 2 + markerPanelTextureLineWidth + markerWidth * k &&
             fingerPositionArray[i].x < (width - markerPanelTextureWidth) / 2 - markerPanelTextureLineWidth + markerWidth * (k + 1) &&
             fingerPositionArray[i].y > (height - buttonPanelHeight) &&
@@ -373,7 +371,7 @@ function Marker() {
     var _this = this;
     _this.markerArray = [];
 
-    this.create = function(slot, startTime) {
+    this.create = function(slot) {
         if (slot == 64 || slot == 448)
             var marker = new PIXI.Sprite.fromImage("../images/marker0.png");
         else var marker = new PIXI.Sprite.fromImage("../images/marker1.png");
@@ -382,13 +380,9 @@ function Marker() {
         marker.anchor.x = 0;
         marker.anchor.y = 0;
 
-        marker.used = 0;
-        marker.type = parseInt(slot / 120);
-        marker.startTime = startTime;
-
         // marker.width = tunnelWidth;
 
-        marker.position.x = (width - markerPanelTextureWidth) / 2 + marker.type * tunnelWidth;
+        marker.position.x = (width - markerPanelTextureWidth) / 2 + parseInt(slot / 120) * tunnelWidth;
         marker.position.y = -20;
 
         stage.addChild(marker);
@@ -400,18 +394,9 @@ function Marker() {
     this.update = function() {
         _this.markerArray.forEach(updateMarker);
 
-        function updateMarker(element, index) {
+        function updateMarker(element) {
             element.position.y += 1000 / ticker.FPS;
-            if ( Math.abs( ticker.lastTime - globalMusicOffset - element.startTime ) >= 700 && Math.abs( ticker.lastTime - element.startTime ) <= 1400) {
-                // console.log(Math.abs( ( height - buttonPanelHeight - 25 - 10 - 37.5 ) - element.position.y) );
-                checkKeyDown( element, element.type , false );
-            }
-            if ( Math.abs( ticker.lastTime - globalMusicOffset - element.startTime ) < 700 ) {
-
-                checkKeyDown( element, element.type , true );
-            }
-
-            if (element.position.y >= height - buttonPanelHeight) {
+            if (element.position.y >= height - buttonPanelHeight - 25) {
                 stage.removeChild(element);
             };
         }
@@ -419,23 +404,13 @@ function Marker() {
 };
 
 var marker = new Marker();
-
-function checkKeyDown ( element, type, pos ) {
-
-    if (keyMap[type].direction == 'down') {
-        judgementDisplay( pos );
-        if( !pos ) {
-            stage.removeChild(element);
-        }
-    } else return;
-
-};
+// setInterval(marker.create, 1000);
 
 function searchObject(hitObjects) {
     for (var i = 0; i < hitObjects.length; i++) {
         for (var j = 0; j < 4; j++) {
-            if (i + j < hitObjects.length && ticker !== undefined && Math.abs(ticker.lastTime - ( hitObjects[i + j].startTime) - globalMusicOffset) < (1 / ticker.FPS * 400))
-                marker.create(hitObjects[i + j].position[0], hitObjects[i + j].startTime);
+            if (i + j < hitObjects.length && ticker !== undefined && Math.abs(ticker.lastTime - ( hitObjects[i + j].startTime) + globalOffset) < (1 / ticker.FPS * 400))
+                marker.create(hitObjects[i + j].position[0]);
         };
     };
 };
