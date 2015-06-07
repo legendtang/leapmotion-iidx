@@ -70,14 +70,14 @@ function init() {
     // Making sure our renderer is always the right size
     window.addEventListener( 'resize', onWindowResize , false );
 
-    
-   
+
+
     leftHand = new ConnectedHand( controller );
     leftHand.addToScene( scene );
 
     rightHand = new ConnectedHand( controller );
     rightHand.addToScene( scene );
-    
+
     var geo = new THREE.IcosahedronGeometry( 2 , 1 );
     var mat = new THREE.MeshNormalMaterial();
 
@@ -86,7 +86,7 @@ function init() {
     var mesh = new THREE.Mesh(geo ,  mat );
     joint.add( mesh );
 
-   
+
     var connection = new THREE.Object3D();
 
     var squisher = new THREE.Object3D();
@@ -98,7 +98,7 @@ function init() {
     squisher.add( line );
     var line = createFlatCircle( -40 , 10 , 20 , mat );
     squisher.add( line );
-    
+
     var mat = new THREE.LineBasicMaterial();
     mat.color.setHSL( .05 , .9 , .6 );
 
@@ -116,7 +116,7 @@ function init() {
     var line = createFlatCircle( 5 , 8 , 20 , mat );
     squisher.add( line );
 
-    
+
     var mat = new THREE.LineBasicMaterial();
     mat.color.setHSL( .1 , .9 , .6 );
 
@@ -134,7 +134,7 @@ function init() {
 
     palm = new THREE.Object3D();
 
-    
+
     for( var i = 0; i < 8; i++ ){
       var mat = new THREE.LineBasicMaterial();
       mat.color.setHSL( .4 + ( i * .01 ) , .9 , .6 );
@@ -162,7 +162,7 @@ function init() {
     var geometry = new THREE.Geometry();
 
     for( var i = 0; i <= count; i++ ){
-  
+
       var t = ( i / count ) * Math.PI * 2;
 
       v = new THREE.Vector3(
@@ -202,7 +202,7 @@ function init() {
 
     stats.update();
 
-    renderer.render( scene , camera );
+    // renderer.render( scene , camera );
 
     requestAnimationFrame( animate );
 

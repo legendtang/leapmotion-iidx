@@ -56,6 +56,8 @@ var oldKeyMap = [
     },
 ];
 
+var leapKeyMap = [], oldLeapMap = [];
+
 var gameRenderer = PIXI.autoDetectRenderer(width, height, {
     backgroundColor: 0xFFFFFF,
     transparent: true,
@@ -114,13 +116,12 @@ basicPanel.endFill();
 basicPanel.beginFill(0xEF6868, 1);
 basicPanel.lineStyle(0);
 basicPanel.drawPolygon([
-    (width - markerPanelTextureWidth) / 2,
-    height, (width - markerPanelTextureWidth) / 2,
-    height - buttonPanelHeight + buttonPanelMarginTop, (width - markerPanelTextureWidth) / 2 + 20,
-    height - buttonPanelHeight + buttonPanelMarginTop - 20, (width + markerPanelTextureWidth) / 2 - 20,
-    height - buttonPanelHeight + buttonPanelMarginTop - 20, (width + markerPanelTextureWidth) / 2,
-    height - buttonPanelHeight + buttonPanelMarginTop, (width + markerPanelTextureWidth) / 2,
-    height,
+    (width - markerPanelTextureWidth) / 2, height,
+    (width - markerPanelTextureWidth) / 2, height - buttonPanelHeight + buttonPanelMarginTop,
+    (width - markerPanelTextureWidth) / 2 + 20, height - buttonPanelHeight + buttonPanelMarginTop - 20,
+    (width + markerPanelTextureWidth) / 2 - 20, height - buttonPanelHeight + buttonPanelMarginTop - 20,
+    (width + markerPanelTextureWidth) / 2, height - buttonPanelHeight + buttonPanelMarginTop,
+    (width + markerPanelTextureWidth) / 2, height
 ]);
 basicPanel.endFill();
 
@@ -202,6 +203,7 @@ cover.drawPolygon([
     width - ((width - basicPanelWidth) / 2 + healPanelWidth),
     height - buttonPanelHeight
 ]);
+cover.drawRect((width - markerPanelWidth) / 2 + 20 + healPanelWidth - 1.5, height - buttonPanelHeight, 450, 25)
 cover.endFill();
 stage.addChild(cover);
 
@@ -247,11 +249,29 @@ function point(pointerContainer) {
 }
 
 point.prototype.setPosition = function(fingerPositionArray) {
-    // this.oldPosition = [];
-    // for(var i in fingerPositionArray){
-    //     this.oldPosition[i] = {x: fingerPositionArray[i].x, y: fingerPositionArray[i].y};
-    // }
     this.position = fingerPositionArray;
+    // console.log(keyMap[0].direction);
+    for(var i in fingerPositionArray){
+        // console.log(fingerPositionArray[i]);
+        var flag = 0;
+        for(var k=0; k<=3; k++){
+            // console.log(fingerPositionArray[i].x + "|" + ((width - markerPanelTextureWidth) / 2 + 120 * k));
+            if(fingerPositionArray[i].x > (width - markerPanelTextureWidth) / 2 + markerPanelTextureLineWidth + markerWidth * k &&
+            fingerPositionArray[i].x < (width - markerPanelTextureWidth) / 2 - markerPanelTextureLineWidth + markerWidth * (k + 1) &&
+            fingerPositionArray[i].y > (height - buttonPanelHeight) &&
+            fingerPositionArray[i].y < height && oldLeapMap[k] != 'down'){
+                oldLeapMap[k] = 'down';
+                keyMap[k].direction = 'down';
+                flag = 1;
+            }
+            else if(oldLeapMap[k] != 'up'){
+                if(!flag){
+                    oldLeapMap[k] = 'up';
+                    keyMap[k].direction = 'up';
+                }
+            }
+        }
+    }
 }
 
 point.prototype.draw = function() {
@@ -284,6 +304,7 @@ button.prototype.draw = function() {
                 index = 4;
                 break;
         }
+        // console.log(keyMap[i].direction);
         if(keyMap[i].direction == 'down' && oldKeyMap[i].direction != 'down'){
             oldKeyMap[i].direction = 'down';
             this.container.lineStyle(0);
@@ -371,6 +392,7 @@ function Marker() {
         marker.position.y = -20;
 
         stage.addChild(marker);
+        stage.swapChildren(marker, cover);
 
         _this.markerArray.push(marker);
     };
@@ -447,14 +469,16 @@ animateGame();
 
 function animateGame() {
     var pointersArray = [];
-    for (var i = 1; i <= 4; i++) {
+    for (var i = 1; i <= 2; i++) {
         pointersArray.push({
-            x: (rightHand.fingers[i].connections[2].position.x * 8 + width / 2),
-            y: (-rightHand.fingers[i].connections[2].position.y * 25 + 600)
+            x: (leftHand.fingers[i].connections[2].position.x * 10 + width / 2),
+            y: (-leftHand.fingers[i].connections[2].position.y * 20 + 600)
+        });
+        pointersArray.push({
+            x: (rightHand.fingers[i].connections[2].position.x * 10 + width / 2),
+            y: (-rightHand.fingers[i].connections[2].position.y * 20 + 600)
         });
     }
-    Pointer.setPosition(pointersArray);
-    Pointer.draw();
 
     Button.draw();
 
@@ -463,6 +487,9 @@ function animateGame() {
     };
 
     marker.update();
+
+    Pointer.setPosition(pointersArray);
+    Pointer.draw();
 
     requestAnimationFrame(animateGame);
 
