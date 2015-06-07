@@ -180,6 +180,8 @@ light.position.x = (width - markerPanelTextureWidth) / 2;
 light.position.y = height - buttonPanelHeight - 105;
 light.width = 480;
 
+var light2 = new PIXI.Sprite.fromImage("../images/light2.png");
+
 var cover = new PIXI.Graphics();
 cover.beginFill(0x000, 1);
 cover.lineStyle(0);
@@ -331,9 +333,15 @@ button.prototype.draw = function() {
                 height
             ]);
             this.container.endFill();
+
+            stage.addChild(light2);
+            stage.swapChildren(light2, cover);
+            light2.position.x = (width - markerPanelTextureWidth) / 2 + markerPanelTextureLineWidth + markerWidth * (index - 1) - 1;
+            light2.position.y = height - buttonPanelHeight - 600;
         }
         if(keyMap[i].direction == 'up' && oldKeyMap[i].direction != 'up'){
             oldKeyMap[i].direction = null;
+            stage.removeChild(light2);
             this.container.clear();
             keyMap[i].direction = null;
         }
@@ -425,7 +433,7 @@ function Marker() {
                     combo = 0;
                 };
                 delete marker.markerArray[marker.markerArray.indexOf(element)];
-                
+
             };
         }
     };
